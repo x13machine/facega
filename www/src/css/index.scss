@@ -1,0 +1,31 @@
+.faces{
+    width: 128px;
+    height: 128px;
+    margin: 5px;
+    padding: 0;
+    border: transparent 2px solid;
+    float: left;
+    background-size: 100% 100%;
+}
+
+.selected{
+    border: #0F0 2px solid;
+}
+
+#box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#faces {
+    width: 426px;
+    height: 426px; 
+    padding: 5px;
+    margin: 5pt;
+}
+
+#box .btn{
+    float: right;
+}

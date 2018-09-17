@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    FaceGA
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href='{% static "css/index.css" %}'>
+{% endblock %}
+
+{% block content %}
+    <div id='box'>
+        <div id='faces'></div>
+        <button type="button" class='btn btn-success m-1' id='next' disabled>Next</button>
+        <button type="button" class='btn btn-primary m-1' id='next' disabled>Back</button>
+        <button type="button" class='btn btn-warning m-1' id='reset'>Reset</button>
+        <button type="button" class='btn btn-danger m-1' id='restart'>Restart</button>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src='{% static "js/index.js" %}'></script>
+{% endblock %}
