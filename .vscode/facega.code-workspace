@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "/home/brandan/facega"
+		},
+		{
+			"path": "/var/www/html/vdu"
+		}
+	],
+    "settings": {
+        "git.ignoreLimitWarning": true
+    }
+}

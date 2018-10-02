@@ -4,62 +4,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>
-        {% block title %}
-        {% endblock %}
-    </title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href='{% static "lib/bootstrap.css" %}'>
-    <link rel="stylesheet" type="text/css" href='{% static "css/style.css" %}'>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    
-    {% block styles %}
-    {% endblock %}
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href='{% static "lib/bootstrap.css" %}'>
+	<link rel="stylesheet" type="text/css" href='{% static "css/style.css" %}'>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+	
+	{% block styles %}
+	{% endblock %}
 </head>
 <body>
-    <header>
-        <!-- Fixed navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="#">FaceGA</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item {% if active_page == 'index' %}active{% endif %}">
-                        <a class="nav-link" href="{%url 'main:index' %}">Home</a>
-                    </li>
-                    <li class="nav-item {% if active_page == 'about' %}active{% endif %}">
-                        <a class="nav-link" href="{% url 'main:about' %}">About</a>
-                    </li>
-                    <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
-                        <a class="nav-link" href="{% url 'main:gallery' %}">Gallery</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    
-    <!-- Begin page content -->
-    <main role="main" class="container">
-        {% block content %}
-        {% endblock %}
-    </main>
-    
-    <footer class="footer">
-        <div class="container">
-            <span class="text-muted">Place sticky footer content here.</span>
-        </div>
-    </footer>
-    
-    
-    
-    
-    <script src='{% static "lib/jquery.js" %}'></script>
-    <script src='{% static "lib/bootstrap.js" %}'></script>
-    {% block scripts %}
-    {% endblock %}
+	<header>
+		<!-- Fixed navbar -->
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<a class="navbar-brand" href="#">FaceGA</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item {% if active_page == 'index' %}active{% endif %}">
+						<a class="nav-link" href="{%url 'main:index' %}">Home</a>
+					</li>
+					<li class="nav-item {% if active_page == 'about' %}active{% endif %}">
+						<a class="nav-link" href="{% url 'main:about' %}">About</a>
+					</li>
+					<li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+						<a class="nav-link" href="{% url 'main:gallery' %}">Gallery</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	
+	<!-- Begin page content -->
+	<main role="main" class="container">
+		{% block content %}
+		{% endblock %}
+	</main>
+	<!--
+	<footer class="footer">
+		<div class="container">
+			<span class="text-muted">Place sticky footer content here.</span>
+		</div>
+	</footer>
+	-->
+	
+	
+	
+	<script src='{% static "lib/jquery.js" %}'></script>
+	<script src='{% static "lib/bootstrap.js" %}'></script>
+	{% if jsData %}
+	<script>
+		jsData = {{jsData | safe}};
+	</script>
+	{% endif %}
+	{% block scripts %}
+	{% endblock %}
 </body>
 </html>
 

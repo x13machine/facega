@@ -3,8 +3,14 @@
 {% block title %}FaceGA | Gallery{% endblock %}
 
 {% block styles %}
+	<link rel="stylesheet" type="text/css" href='{% static "css/gallery.css" %}'>
 {% endblock %}
 
 {% block content %}
     <h1>Gallery</h1>
+    <div id='gallery'></div>
+{% endblock %}
+
+{% block scripts %}
+	<script src='{% static "js/gallery.js" %}'></script>
 {% endblock %}
