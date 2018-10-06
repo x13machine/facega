@@ -15,7 +15,7 @@ choices = {
 	},
 	'pg': {
 		'name': 'Poster\'s Gender',
-		'question': 'What is your Gender?',
+		'question': 'What is your gender?',
 		'default': 'u',
 		'options': [
 			('m', 'Male'),
@@ -33,7 +33,6 @@ choices = {
 			('g', 'Homosexual'),
 			('b', 'Bisexual'),
 			('a', 'Asexual'),
-			('d', 'Dog Fucker'),
 			('o', 'Other'),
 			('u', 'Unknown')
 		]

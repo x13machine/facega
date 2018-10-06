@@ -11,7 +11,6 @@ class Submit extends Component {
 	}
 	
 	update(self,e, index){
-		console.log(this)
 		this.state.choices[index].value = e.target.value;
 		this.setState(this.state);
 	}

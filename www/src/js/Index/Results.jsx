@@ -15,7 +15,11 @@ class Results extends Component {
 		
 		this.setState(this.state);
 	}
-
+	constructor(){
+		super(...arguments);
+		this.jump = this.jump.bind(this);
+	}
+	
 	render() { 
 		return (
 			<React.Fragment>

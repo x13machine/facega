@@ -11,17 +11,19 @@ class Evolve extends Component {
 	paras = this.props.paras;
 
 	state = {
+		gender: '',
 		faces: [],
 		selected: {},
 		history: [],
 		active: null,
 		epoch: 0
-	};
+	}
 	
 	range = 3;
 	count = 9;
-	parameters = 400;
-
+	parameters = 300;
+	change = 1;
+	
 	next() {
 
 		var breed = Object.keys(this.state.selected);
@@ -42,13 +44,12 @@ class Evolve extends Component {
 		var remainder = this.count % breed.length;
 		
 		
-		var change = 0.5;
 		
-		function breedFace(parent){
+		var breedFace = (parent) => {
 			var face = [];
 			
 			parent.forEach((dp) => {
-				face.push(Math.max(Math.min(dp + random(-change, change),0.999),0.001).toFixed(4) * 1);
+				face.push(Math.max(Math.min(dp + random(-this.change, this.change),20),-20).toFixed(4) * 1);
 			});
 			
 			return face;
@@ -99,7 +100,10 @@ class Evolve extends Component {
 
 		$.ajax('/rest/face', {
 			type: 'POST',
-			data: JSON.stringify(faces),
+			data: JSON.stringify({
+				gender: this.state.gender,
+				faces: faces
+			}),
 			contentType: 'application/json; charset=utf-8',
 			headers:{
 				'X-CSRFToken': Cookies.get('csrftoken')
@@ -163,9 +167,17 @@ class Evolve extends Component {
 
 	constructor(){
 		super(...arguments);
-		this.restart();
+		this.jump = this.jump.bind(this);
 	}
 	
+	jump(data){
+		if(data.type === 'start'){
+			
+			this.state.gender = data.gender;
+			this.restart();
+		}
+	}
+
 	save(){
 		var base = this.state.faces[this.state.active].img
 		var blob = base64StringToBlob(base, 'image/jpg');

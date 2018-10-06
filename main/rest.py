@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import *
 import numpy as np
-from .morpher import Morpher
+from . import autoencoder
 import json as js
 import cv2, base64, utils
 from .models import *
@@ -11,6 +11,11 @@ bad = HttpResponseBadRequest(js.dumps('nope'), content_type='application/json')
 def sinn(mapping, key, value):
 	if value is not None:
 		mapping[key] = value
+
+
+def submitFace(res):
+	
+	return HttpResponse(js.dumps('ok'), content_type="application/json")
 
 def listFaces(res):
 	tx = {
@@ -64,30 +69,29 @@ def generateFace(res):
 	except:
 		return bad
 	
-	parameters = 400
-
-	if json == None or type(json) != list:
+	parameters = autoencoder.models[autoencoder.default]['bottleneck']
+	if json == None or type(json) != dict or not 'gender' in json:
 		return bad
-		
 	
+	gender = 'f' if json['gender'] == 'f' else 'm'
 	faces = []
-	for arr in json:
+
+	arr_ = json['faces']
+	for arr in arr_:
 		if type(arr) != list or len(arr) != parameters:
 			return bad
 		try:
-			nums = np.nan_to_num(np.array(arr).astype(np.float64).clip(0.001,0.999))
+			nums = np.nan_to_num(np.array(arr).astype(np.float64).clip(-20,20))
 			faces.append(nums)
 		except:
 			return bad
 	
-	
 	tx = []
 	for face in faces:
-		morpher = Morpher()
-		morpher.set_Z(face)
-		face = (morpher.generate_face() * 255).clip(0,255)
+		img = autoencoder.decode(autoencoder.default, gender, face)
+		face = (img * 255).clip(0,255)
 		
-		_, buf = cv2.imencode('.jpg', face)
+		_, buf = cv2.imencode('.jpg', cv2.cvtColor(face, cv2.COLOR_RGB2BGR))
 		tx.append(base64.b64encode(np.array(buf).tostring()).decode('utf-8'))
 
 	return HttpResponse(js.dumps(tx), content_type="application/json")

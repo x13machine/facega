@@ -5,7 +5,6 @@ import utils
 # Create your views here.
 
 def index(res):
-	print('what')
 	return utils.render(res, 'index', {
 		'jsData': {
 			'choices': choices

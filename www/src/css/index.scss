@@ -1,4 +1,3 @@
-
 .faces{
 	width: 128px;
 	height: 128px;
@@ -44,4 +43,20 @@ $page-margin: 10pt;
 	height: 426px; 
 	padding: 5px;
 	margin: 5pt;
+}
+
+$im: 10pt;
+
+.info-button{
+	width: calc( 50% - #{$im} );
+}
+
+.info-button:first-child{
+	margin-left: 0;
+	margin-right: $im;
+}
+
+.info-button:last-child{
+	margin-right: 0;
+	margin-left: $im;
 }
