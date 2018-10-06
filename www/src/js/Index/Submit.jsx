@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 
 class Submit extends Component {
 	state = { 
@@ -7,6 +8,7 @@ class Submit extends Component {
 			choice.index = index;
 			return choice;
 		}),
+		face: {},
 		understand: false
 	}
 	
@@ -21,9 +23,31 @@ class Submit extends Component {
 	}
 
 	submit(){
-		this.paras.jump('Results', {
-			'type': 'submit'
+		var choices = {};
+		this.state.choices.array.forEach(choice => {
+			choices[choice.key] = choice.value;
 		});
+
+		$.ajax('/rest/submitface', {
+			type: 'POST',
+			data: JSON.stringify({
+				choices: choices,
+				gender: this.state.face.gender,
+				parameters: this.state.face.parameters
+			}),
+			contentType: 'application/json; charset=utf-8',
+			headers:{
+				'X-CSRFToken': Cookies.get('csrftoken')
+			},
+			dataType: 'json',
+			success: () => {
+				this.paras.jump('Results', {
+					'type': 'submit'
+				});
+			}	
+		});
+
+
 	}
 
 	render() { 

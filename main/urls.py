@@ -9,6 +9,7 @@ urlpatterns = [
 	path('gallery',views.gallery, name='gallery'),
 	path('i/<slug:uid>.jpg',rest.serveFace, name='images'),
 
+	path('rest/submitface', rest.submitFace, name='submitFace'),
 	path('rest/listfaces', rest.listFaces, name='listFaces'),
 	path('rest/face',rest.generateFace, name='face')
 

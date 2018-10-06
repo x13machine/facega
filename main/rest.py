@@ -6,16 +6,42 @@ import json as js
 import cv2, base64, utils
 from .models import *
 
+
 bad = HttpResponseBadRequest(js.dumps('nope'), content_type='application/json')
+
+
+def submitFace(res):
+	if not res.is_ajax() or not res.method == 'POST':
+		return bad
+	try:
+		json = js.loads(res.body)
+	except:
+		return bad
+	
+	if json == None or type(json) != dict:
+		return bad
+	
+	uid = utils.uid()
+	
+	r = requests.get(user.get_picture())
+	with open('faces/' + uid + '.jpg', 'wb') as f:
+		f.write(r.content)
+	
+	face = Face(
+		uid = uid,
+		gender = user.get_gender()[0],
+		poster_gender = random.choice(choices['poster_gender'])[0],
+		poster_sexuality = random.choice(choices['poster_sexuality'])[0],
+		poster_race = random.choice(choices['poster_race'])[0],
+		poster_country = random.choice(choices['poster_country'])[0]
+	)
+
+	fave.save()
+	return HttpResponse(js.dumps('ok'), content_type='application/json')
 
 def sinn(mapping, key, value):
 	if value is not None:
 		mapping[key] = value
-
-
-def submitFace(res):
-	
-	return HttpResponse(js.dumps('ok'), content_type="application/json")
 
 def listFaces(res):
 	tx = {
