@@ -28,10 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 #ALLOWED_HOSTS = [
-	'facega.demos.brandanwaldvogel.com',
-	'facega-demos.brandanwaldvogel.com',
-	'192.168.1.105'
-]
+#	'facega.demos.brandanwaldvogel.com',
+#	'facega-demos.brandanwaldvogel.com',
+#	'192.168.1.105'
+#]
 
 
 # Application definition
