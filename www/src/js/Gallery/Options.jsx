@@ -48,11 +48,11 @@ class Options extends Component {
 		history.pushState(null, null, ser === '' ? '' : '?' + ser);
 
 		return (
-			<div>
+			<aside id='options' class='col-12 col-md-2 p-0'>
 				{ this.state.choices.map(choice => (
-					<div key={choice.key}>
+					<div key={choice.key} class='form-group'>
 						<b>{choice.name}: </b>
-						<select value={choice.value} onChange={(e) => this.update(e,choice.index)}>
+						<select value={choice.value} onChange={(e) => this.update(e,choice.index)} class='form-control'>
 							{ choice.options.map(option => (
 								<option key={option[0]} value={option[0]}>
 									{option[1]}
@@ -61,7 +61,7 @@ class Options extends Component {
 						</select>
 					</div>
 				))}
-			</div>
+			</aside>
 		);
 	}
 }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import autoBind from 'react-autobind';
+
 
 class Results extends Component {
 	paras = this.props.paras;
@@ -8,9 +10,11 @@ class Results extends Component {
 	}
 
 	jump(data){
+		var data = data || {};
 		if(data.type === 'submited'){
 			this.state.submited = true;
 		}else if(data.type === 'evolve'){
+			this.state.submited = false;
 			this.state.face = data.face;
 		}
 		
@@ -18,7 +22,7 @@ class Results extends Component {
 	}
 	constructor(){
 		super(...arguments);
-		this.jump = this.jump.bind(this);
+		autoBind(this);
 	}
 
 	render() { 
@@ -26,11 +30,11 @@ class Results extends Component {
 			<React.Fragment>
 				<h1>Results</h1>
 				<p style={{display: this.state.submited ? 'block' : 'none'}}>The image was of successfully submited.</p>
-				<img src={this.state.face.src}/>
+				<img src={'data:image/jpg;base64,' + (this.state.face.img || '')}/>
 				<button className='btn btn-primary m-0' onClick={() => this.paras.jump('Evolve')}>Back</button> 
 				<button
 					className='btn btn-primary m-0'
-					onClick={() => this.paras.jump('Submit',this.state.face)}
+					onClick={() => this.paras.jump('Submit', this.state.face)}
 					style={{display: this.state.submited ? 'none' : 'block'}}>Submit Results</button> 
 			</React.Fragment>
 		);

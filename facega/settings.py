@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'facega.wsgi.application'
 DATABASES = {
 	'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'facega',
-        'USER': 'root',
-        'PASSWORD': 'pass',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.getenv('db', 'facega'),
+        'USER': os.getenv('user','root'),
+        'PASSWORD': os.getenv('pass','pass'),
+        'HOST': os.getenv('host','127.0.0.1'),
+        'PORT': os.getenv('port',''),
 	}
 }
 

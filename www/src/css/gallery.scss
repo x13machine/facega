@@ -11,3 +11,20 @@
 	width: 128px;
 }
 
+
+#gallery>div{
+	float:left;
+}
+
+
+$ow: 170pt;
+
+#options{
+	width: $ow;
+	padding: 5pt;
+}
+
+#faces{
+	width: calc( 100% - #{$ow} );
+	height: 100%;
+}

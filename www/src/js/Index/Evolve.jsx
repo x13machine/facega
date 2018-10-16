@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import { base64StringToBlob } from 'blob-util';
 import FileSaver from 'file-saver';
+import autoBind from 'react-autobind';
 
-function random(min, max) {
-	return Math.random() * (max - min) + min;
-}
+
 
 class Evolve extends Component {
 	paras = this.props.paras;
@@ -22,8 +21,8 @@ class Evolve extends Component {
 	range = 3;
 	count = 9;
 	parameters = 300;
-	change = 1;
-	
+	change = 5;
+
 	next() {
 
 		var breed = Object.keys(this.state.selected);
@@ -78,7 +77,7 @@ class Evolve extends Component {
 	}
 
 	restore(state){
-		state.forEach((face_,i) => {
+		state.forEach((face_, i) => {
 			var face = this.state.faces[i];
 			face.mode = '';
 			face.img = face_.img;
@@ -167,12 +166,11 @@ class Evolve extends Component {
 
 	constructor(){
 		super(...arguments);
-		this.jump = this.jump.bind(this);
+		autoBind(this);
 	}
 	
 	jump(data){
 		if(data.type === 'start'){
-			
 			this.state.gender = data.gender;
 			this.restart();
 		}
@@ -196,9 +194,14 @@ class Evolve extends Component {
 	}
 
 	done(){
+		var face = this.state.faces[this.state.active];
 		this.paras.jump('Results',{
 			'type': 'evolve',
-			'face': this.state.faces[this.state.active]
+			'face': {
+				parameters: face.parameters,
+				gender: this.state.gender,
+				img: face.img 
+			}
 		});
 	}
 	
@@ -216,11 +219,11 @@ class Evolve extends Component {
 					onClick={() => this.click(face.key)}>
 					</div>)}
 				</div>
-				<button className='btn btn-danger m-1' onClick={() => this.restart()}>Restart</button>
-				<button className='btn btn-warning m-1' onClick={() => this.reset()}>Reset</button>
-				<button className='btn btn-primary m-1' onClick={() => this.done()} disabled={this.state.active === null}>Done</button>
-				<button className='btn btn-primary m-1' onClick={() => this.back()} disabled={this.state.epoch <= 1}>Back</button>
-				<button className='btn btn-success m-1' onClick={() => this.next()} disabled={Object.keys(this.state.selected).length === 0 && this.state.epoch === this.state.history.length}>Next</button>
+				<button className='btn btn-danger m-1' onClick={this.restart}>Restart</button>
+				<button className='btn btn-warning m-1' onClick={this.reset}>Reset</button>
+				<button className='btn btn-primary m-1' onClick={this.done} disabled={this.state.active === null}>Done</button>
+				<button className='btn btn-primary m-1' onClick={this.back} disabled={this.state.epoch <= 1}>Back</button>
+				<button className='btn btn-success m-1' onClick={this.next} disabled={Object.keys(this.state.selected).length === 0 && this.state.epoch === this.state.history.length}>Next</button>
 
 			</React.Fragment>);
 	}

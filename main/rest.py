@@ -2,15 +2,16 @@ from django.shortcuts import render
 from django.http import *
 import numpy as np
 from . import autoencoder
+from . import models
 import json as js
 import cv2, base64, utils
-from .models import *
-
 
 bad = HttpResponseBadRequest(js.dumps('nope'), content_type='application/json')
 
 
 def submitFace(res):
+
+	#validate data
 	if not res.is_ajax() or not res.method == 'POST':
 		return bad
 	try:
@@ -18,25 +19,59 @@ def submitFace(res):
 	except:
 		return bad
 	
-	if json == None or type(json) != dict:
+	if (
+		json == None or 
+		type(json) != dict or
+		not 'gender' in json or 
+		not 'parameters' in json or
+		not 'choices' in json or 
+		type(json['choices']) != dict
+	):
 		return bad
 	
+	gender = 'f' if json['gender'] == 'f' else 'm'
+	
+	
+	pcount = autoencoder.models[autoencoder.default]['bottleneck']
+	arr = json['parameters']
+	if type(json['parameters']) != list or len(arr) != pcount:
+		return bad
+	try:
+		arr = np.nan_to_num(np.array(arr).astype(np.float64).clip(-20,20))
+	except:
+		return bad
+	choices = json['choices']
+
+	for key, choice in models.choices.items():
+		if key == 'g': continue # ignore gender choice
+		if not key in choices:
+			return bad
+
+		b = True
+		choice_ = choices[key]
+		for option in choice['options']:
+			if option[0] == choice_: 
+				b = False
+				break
+		if b: return bad
+
+	#save data
 	uid = utils.uid()
-	
-	r = requests.get(user.get_picture())
-	with open('faces/' + uid + '.jpg', 'wb') as f:
-		f.write(r.content)
-	
-	face = Face(
+	img = autoencoder.decode(autoencoder.default, gender, arr)
+	cv2.imwrite('faces/' + uid + '.jpg',cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+	face = models.Face(
 		uid = uid,
-		gender = user.get_gender()[0],
-		poster_gender = random.choice(choices['poster_gender'])[0],
-		poster_sexuality = random.choice(choices['poster_sexuality'])[0],
-		poster_race = random.choice(choices['poster_race'])[0],
-		poster_country = random.choice(choices['poster_country'])[0]
+		gender = gender,
+		parameters = js.dumps(list(arr)),
+		poster_gender = choices['pg'],
+		poster_sexuality = choices['ps'],
+		poster_race  = choices['pr'],
+		poster_country = choices['pc']
 	)
 
-	fave.save()
+	face.save()
+	
 	return HttpResponse(js.dumps('ok'), content_type='application/json')
 
 def sinn(mapping, key, value):
@@ -44,6 +79,9 @@ def sinn(mapping, key, value):
 		mapping[key] = value
 
 def listFaces(res):
+	if not res.is_ajax():
+		return bad
+	
 	tx = {
 		'faces': [],
 		'rid': 1000000000
@@ -62,7 +100,7 @@ def listFaces(res):
 	sinn(options, 'poster_race', res.GET.get('pr'))
 	sinn(options, 'poster_country', res.GET.get('pc'))
 
-	for face in Face.objects.filter(**options).order_by('-id')[0:100]:
+	for face in models.Face.objects.filter(**options).order_by('-id')[0:100]:
 		tx['rid'] = min(tx['rid'], face.id)
 		tx['faces'].append({
 			'uid': face.uid,
@@ -115,9 +153,8 @@ def generateFace(res):
 	tx = []
 	for face in faces:
 		img = autoencoder.decode(autoencoder.default, gender, face)
-		face = (img * 255).clip(0,255)
 		
-		_, buf = cv2.imencode('.jpg', cv2.cvtColor(face, cv2.COLOR_RGB2BGR))
+		_, buf = cv2.imencode('.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
 		tx.append(base64.b64encode(np.array(buf).tostring()).decode('utf-8'))
 
 	return HttpResponse(js.dumps(tx), content_type="application/json")

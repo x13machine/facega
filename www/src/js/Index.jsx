@@ -5,6 +5,15 @@ import Evolve from './Index/Evolve';
 import Results from './Index/Results';
 import Submit from './Index/Submit';
 
+window.random = (min, max) => {
+	return Math.random() * (max - min) + min;
+}
+
+window.bindFunctions = (obj) => {
+	for(var i in obj){
+		if(typeof obj[i] === 'function')obj[i] = obj[i].bind(obj);
+	}
+}
 
 class Index extends Component {
 	pages = {

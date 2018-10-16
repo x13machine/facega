@@ -31,7 +31,7 @@ def decode(version,gender, li):
 	model = models[version]
 	decoder = model['decoder'][gender]
 	img = decoder.predict(np.array([li]))
-	return img.reshape((model['size'],model['size'],3))
+	return (img.reshape((model['size'],model['size'],3)) * 255).clip(0,255)
 
 
 def gen():

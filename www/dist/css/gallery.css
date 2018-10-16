@@ -1,1 +1,1 @@
-.faces{background:#444;border-radius:5pt;float:left;margin:2.5pt;padding:5pt}.faces img{border-radius:5pt;width:128px}
+.faces{background:#444;border-radius:5pt;margin:2.5pt;padding:5pt}.faces img{border-radius:5pt;width:128px}#gallery>div,.faces{float:left}#options{width:170pt;padding:5pt}#faces{width:calc(100% - 170pt);height:100%}

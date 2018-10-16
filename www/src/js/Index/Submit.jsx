@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import autoBind from 'react-autobind';
 import Cookies from 'js-cookie';
+
 
 class Submit extends Component {
 	state = { 
@@ -12,19 +14,24 @@ class Submit extends Component {
 		understand: false
 	}
 	
-	update(self,e, index){
+	constructor(){
+		super(...arguments);
+		autoBind(this);
+	}
+
+	update(e, index){
 		this.state.choices[index].value = e.target.value;
 		this.setState(this.state);
 	}
 
 	understandUpdate(e) {
-		this.understand = (e.target.value !== 't');
+		this.state.understand = !this.state.understand;
 		this.setState(this.state);
 	}
 
 	submit(){
 		var choices = {};
-		this.state.choices.array.forEach(choice => {
+		this.state.choices.forEach(choice => {
 			choices[choice.key] = choice.value;
 		});
 
@@ -44,26 +51,31 @@ class Submit extends Component {
 				this.paras.jump('Results', {
 					'type': 'submit'
 				});
-			}	
+			}
 		});
 
 
 	}
 
-	render() { 
+	jump(face){
+		this.state.face = face;
+		this.setState(this.state);
+	}
+
+	render() {
 		return (
 			<React.Fragment>
 				<h1>Submit Form</h1>
 				
-				{this.state.choices.map(choice => <div key={choice.key}>
+				{this.state.choices.map(choice => <div key={choice.key} class='form-group'>
 					<b>{choice.question} </b>
-					<select value={choice.value} onChange={e => this.update(this, e, choice.index)}>
+					<select value={choice.value} onChange={e => this.update(e, choice.index)} class='form-control'>
 						{choice.options.map(option => <option key={option[0]} value={option[0]}>{option[1] === 'Unknown' ? 'Prefer not to say' : option[1]}</option>)}
 					</select>
 				</div>)}
-				<input type='checkbox' onChange={this.understandUpdate} value='t' checked={this.understand ? true : null}/>
+				<input type='checkbox' onChange={this.understandUpdate}/>
 				<b> I understand that this infomation will be publicly available.</b><br/>
-				<button className='btn btn-primary m-0' onClick={this.submit}>Submit</button> 
+				<button className='btn btn-primary m-0' onClick={this.submit} disabled={!this.state.understand}>Submit</button> 
 			</React.Fragment>
 		);
 	}

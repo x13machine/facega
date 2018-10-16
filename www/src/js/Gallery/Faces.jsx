@@ -13,13 +13,13 @@ class Faces extends Component {
 
 	render() { 
 		return (
-			<div>
+			<main id='faces' class='col bg-faded py-3'>
 				{ this.state.faces.map(face => (
 					<div key={face.uid} className='faces'>
 						<img src={'/i/' + face.uid + '.jpg'}/>
 					</div>
 				))}
-			</div> 
+			</main> 
 		);
 	}
 }
