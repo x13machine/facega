@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Cookies from 'js-cookie';
-
 
 class Submit extends Component {
 	state = { 
@@ -44,7 +42,7 @@ class Submit extends Component {
 			}),
 			contentType: 'application/json; charset=utf-8',
 			headers:{
-				'X-CSRFToken': Cookies.get('csrftoken')
+				'X-CSRFToken': $("[name=csrfmiddlewaretoken]").val()
 			},
 			dataType: 'json',
 			success: () => {
@@ -67,7 +65,7 @@ class Submit extends Component {
 			<React.Fragment>
 				<h1>Submit Form</h1>
 				
-				{this.state.choices.map(choice => <div key={choice.key} class='form-group'>
+				{this.state.choices.map(choice => <div key={choice.key} className='form-group'>
 					<b>{choice.question} </b>
 					<select value={choice.value} onChange={e => this.update(e, choice.index)} class='form-control'>
 						{choice.options.map(option => <option key={option[0]} value={option[0]}>{option[1] === 'Unknown' ? 'Prefer not to say' : option[1]}</option>)}

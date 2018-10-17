@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 ]
 
 if DEBUG:
-	ALLOWED_HOSTS = []
+	ALLOWED_HOSTS = ['*']
 
 # Application definition
 
