@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import { base64StringToBlob } from 'blob-util';
 import FileSaver from 'file-saver';
 import autoBind from 'react-autobind';
@@ -104,7 +105,7 @@ class Evolve extends Component {
 			}),
 			contentType: 'application/json; charset=utf-8',
 			headers:{
-				'X-CSRFToken': $("[name=csrfmiddlewaretoken]").val()
+				'X-CSRFToken': Cookies.get('csrftoken')
 			},
 			dataType: 'json',
 			success: (imgs) => {

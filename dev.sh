@@ -3,4 +3,4 @@ cd www
 npm run watch &
 cd ..
 
-python3 manage.py runserver
+debug=true python3 manage.py runserver 0.0.0.0:8000
