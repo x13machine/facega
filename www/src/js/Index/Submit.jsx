@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 
 class Submit extends Component {
 	paras = this.props.paras;
-	state = { 
+	state = {
 		choices: Object.values(jsData.choices).filter(choice => 'question' in choice).map((choice, index) => {
 			choice.value = choice.default;
 			choice.index = index;
