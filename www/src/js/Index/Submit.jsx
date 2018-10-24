@@ -35,7 +35,7 @@ class Submit extends Component {
 		this.state.choices.forEach(choice => {
 			choices[choice.key] = choice.value;
 		});
-		console.log(this)
+		
 		$.ajax('/rest/submitface', {
 			type: 'POST',
 			data: JSON.stringify({
