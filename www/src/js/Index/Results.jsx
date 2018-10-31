@@ -30,12 +30,13 @@ class Results extends Component {
 			<React.Fragment>
 				<h1>Results</h1>
 				<p style={{display: this.state.submited ? 'block' : 'none'}}>The image was of successfully submited.</p>
-				<img src={'data:image/jpg;base64,' + (this.state.face.img || '')}/>
-				<button className='btn btn-primary m-0' onClick={() => this.paras.jump('Evolve')}>Back</button> 
+				<img width='265' src={'data:image/jpg;base64,' + (this.state.face.img || '')}/>
+				<br/>
+				<button className='btn btn-primary m-1' onClick={() => this.paras.jump('Evolve')}>Back</button> 
 				<button
-					className='btn btn-primary m-0'
+					className='btn btn-primary m-1'
 					onClick={() => this.paras.jump('Submit', this.state.face)}
-					style={{display: this.state.submited ? 'none' : 'block'}}>Submit Results</button> 
+					style={{display: this.state.submited ? 'none' : 'inline-block'}}>Submit Results</button> 
 			</React.Fragment>
 		);
 	}

@@ -112,7 +112,7 @@ pyzmq==17.1.2
 qtconsole==4.4.1
 randomuser==1.4.0
 redis==2.10.6
-requests==2.19.1
+requests==2.20.0
 requirements-detector==0.6
 safety==1.8.4
 scipy==1.1.0
